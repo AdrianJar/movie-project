@@ -1,8 +1,27 @@
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { ReactComponent as prevVector } from "./images/prevVector.svg";
 import { ReactComponent as nextVector } from "./images/nextVector.svg";
 
 const mobileBp = ({ theme }) => theme.breakpoints.mobileMax;
+
+const movement = keyframes`
+     0% {
+    transform: translateX(0px);
+    }
+  25% {
+    transform: translateX(-3px);
+    }
+  50% {
+    transform: translateX(0px);
+    }
+  75% {
+    transform: translateX(3px);
+    }
+  100% {
+    transform: translateX(0px);
+    }
+`;
+
 
 export const Wrapper = styled.div`
   display: flex;
@@ -44,6 +63,10 @@ export const PrevVectorIcon = styled(prevVector)`
     `};
   ${Button}:disabled & {
     color: ${({ theme }) => theme.colors.waterloo};
+  }
+
+  ${Button}:hover & {
+    animation: ${movement} 1s linear infinite;
   }
 
   @media (max-width: ${mobileBp}px) {
@@ -94,6 +117,10 @@ export const NextVectorIcon = styled(nextVector)`
     `};
   ${Button}:disabled & {
     color: ${({ theme }) => theme.colors.waterloo};
+  }
+
+  ${Button}:hover & {
+    animation: ${movement} 1s linear infinite;
   }
 
   @media (max-width: ${mobileBp}px) {

@@ -8,31 +8,39 @@ import {
   NextVectorIcon,
 } from "./styled";
 
-export const Pagination = () => {
-    return (
-        <Wrapper>
-      <Button >
+export const Pagination = ({ totalPages, page, setPage}) => {
+  return (
+    <Wrapper>
+      <Button 
+      disabled={page === 1} onClick={() => setPage(1)}>
         <PrevVectorIcon />
+        <PrevVectorIcon mobile ="true" />
         <ButtonText>First</ButtonText>
       </Button>
-      <Button>
+      <Button disabled={page === 1} onClick={() => setPage(page - 1)}>
         <PrevVectorIcon />
         <ButtonText>Previous</ButtonText>
       </Button>
       <PageCounter>
         Page
-        <PageNumbers>Page</PageNumbers>
+        <PageNumbers>{page}</PageNumbers>
         of
-        <PageNumbers>Pages</PageNumbers>
+        <PageNumbers>{totalPages > 500 ? 500 : totalPages}
+        </PageNumbers>
       </PageCounter>
-      <Button>
+      <Button
+      nextdisabled={page === (totalPages > 500 ? 500 : totalPages)}
+      onClick={() => setPage(page + 1)}>
         <ButtonText>Next</ButtonText>
         <NextVectorIcon />
       </Button>
-      <Button>
+      <Button
+      next={page === (totalPages > 500 ? 500 : totalPages)}
+      onClick={() => setPage(totalPages > 500 ? 500 : totalPages)}>
         <ButtonText>Last</ButtonText>
         <NextVectorIcon />
+        <NextVectorIcon mobile="true"/>
       </Button>
     </Wrapper>
-    )
+  )
 }
