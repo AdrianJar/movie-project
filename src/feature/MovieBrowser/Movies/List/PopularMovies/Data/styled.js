@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const Wrapper = styled.section`
     display: grid;
@@ -15,4 +16,9 @@ export const Item = styled.div`
     @media (max-width: ${({theme})=>theme.breakpoints.mobileMax}px) {
         width: 100%;
     }
+`;
+
+export const StyledLink = styled(Link)`
+    text-decoration: none;
+    color: ${({ theme }) => theme.colors.black};
 `;
