@@ -12,9 +12,6 @@ const List = ({movies}) => {
 
     useEffect(() => {
         dispatch(fetchMovie());
-    }, [dispatch])
-
-    useEffect(() => {
         dispatch(fetchGenres());
     }, [dispatch])
     
