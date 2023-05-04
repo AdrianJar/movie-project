@@ -1,10 +1,10 @@
 import { ReactComponent as Picture } from "../NoResults/noResultsIcon.svg";
 import { Disclaimer, PictureWrapper, Wrapper } from "./styled";
 
-const NoResults = () => {
+const NoResults = ({query}) => {
   return (
     <Wrapper>
-      <Disclaimer>Sorry, there are no results for " "</Disclaimer>
+      <Disclaimer>Sorry, there are no results for "{query} "</Disclaimer>
       <PictureWrapper>
         <Picture />
       </PictureWrapper>
