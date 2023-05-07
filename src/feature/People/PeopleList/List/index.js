@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Wrapper, PeopleList, Item, Tile, Poster, Title, StyledLink } from './styled';
 import { Pagination } from "../../../../common/Pagination";
-import Loading from '../../../../common/States/Loading';
+import Loading from '../../../../common/States/Loading/LoadingSpinner';
 import noPicture from '../../../../common/Images/noPicture.svg';
 
 const PeopleListPage = () => {
