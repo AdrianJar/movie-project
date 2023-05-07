@@ -14,7 +14,7 @@ export const Cast = () => {
                 <Wrapper>
                     {cast.map(({ profile_path, id, name, character }) => (
                         <List key={id}>
-                            <StyledLink to={toPerson({ personId: id })}>
+                            <StyledLink to={toPerson(":personId")}>
                                 <Tile>
                                     <Poster
                                         src={`https://image.tmdb.org/t/p/w500/${profile_path}`}
