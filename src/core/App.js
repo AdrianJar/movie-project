@@ -1,6 +1,6 @@
-import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { Header } from "../common/Header";
-import { toMovie, toMovies, toPeople, toPerson } from "./routes";
+import { toMovie, toMovies, toPeople, toPerson, toPeoplePage } from "./routes";
 import MovieDetails from "../feature/MovieDetails";
 import PeopleList from "../feature/People/PeopleList/List";
 import PersonDetails from "../feature/PersonDetails";
@@ -9,7 +9,7 @@ import MovieBrowser from "../feature/MovieBrowser";
 function App() {
   return (
     <>
-      <HashRouter>
+      <BrowserRouter>
         <Header />
         <Switch>
           <Route exact path={toMovies()}>
@@ -18,17 +18,20 @@ function App() {
           <Route path={toMovie({ movieId: ":movieId" })}>
             <MovieDetails />
           </Route>
-          <Route path={toPeople()}>
+          <Route exact path={toPeople()}>
             <PeopleList />
           </Route>
           <Route path={toPerson({ personId: ":personId" })}>
             <PersonDetails />
           </Route>
+          <Route path={toPeoplePage({ pageNumber: ":pageNumber" })}>
+            <PeopleList />
+          </Route>
           <Route>
             <Redirect to={toMovies()} />
           </Route>
         </Switch>
-      </HashRouter>
+      </BrowserRouter>
     </>
   );
 }

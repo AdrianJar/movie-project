@@ -10,7 +10,7 @@ const PeopleListPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [hasError, setHasError] = useState(false); // new state
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     const fetchPopularPeople = async () => {
@@ -26,7 +26,7 @@ const PeopleListPage = () => {
         }, 2000);
       } catch (error) {
         console.error(error);
-        setHasError(true); // set hasError to true in case of an error
+        setHasError(true);
       }
     };
     fetchPopularPeople();
@@ -35,12 +35,13 @@ const PeopleListPage = () => {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     setLoading(true);
-    //adding function which can show the number of page in the URL:
-    const url = `${window.location.origin}${window.location.pathname}?page=${pageNumber}`;
-    window.history.pushState({ path: url }, '', url);
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set('page', pageNumber);
+    const newUrl = window.location.pathname + '?' + urlParams.toString();
+    window.history.pushState({ path: newUrl }, '', newUrl);
   };
 
-  if (hasError) { // if an error occurred, display ErrorBox component
+  if (hasError) {
     return <ErrorBox />;
   }
 
