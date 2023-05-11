@@ -83,7 +83,7 @@ export const TittleText = styled.div`
   }
 `;
 
-export const NavigationList = styled.ul`
+export const NavigationList = styled.div`
   display: flex;
   gap: 16px;
   padding: 0;
@@ -108,7 +108,7 @@ export const StyledNavLink = styled(NavLink)`
   &.active {
     border: 1px solid ${({ theme }) => theme.colors.white};
   }
-  &:hover {
+  &.hover {
     cursor: pointer;
   }
    @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {

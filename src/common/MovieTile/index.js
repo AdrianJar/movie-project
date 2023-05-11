@@ -14,12 +14,12 @@ const MovieTile = ({ movie, genres }) => {
                         alt={movie.title}
                     />
                 ) : (
-                    <img src={noPoster} alt="no poster available" />
+                    {noPoster}
                 )}
             </PosterWrapper>
             <Details>
                 <Title>{movie.title}</Title>
-                {movie.release_date ? <Year>{movie.release_date.slice(0, 4)}</Year> : ""}
+                {movie.release_date ? <Year>{movie.release_date.slice(0, 4)}</Year> : "" }
                 {movie.genre_ids && genres ? (
                     <GenresList>
                         {movie.genre_ids.map((genre_id) => (

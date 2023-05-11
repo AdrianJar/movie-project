@@ -1,6 +1,6 @@
 import { useQueryParameter } from "../../../core/QueryBox/useQueryParameter";
 import { searchQueryParamName } from "../../../core/QueryBox/queryParamName"
-import { LoadingContainer, LoadingWrapper, LoadingText, StyledLoadingSpinner } from "./styled";
+import { LoadingContainer, LoadingWrapper, LoadingText, LoadingSpinner } from "./styled";
 
 const LoadingSearchResults = () => {
     const query = useQueryParameter(searchQueryParamName);
@@ -9,7 +9,7 @@ const LoadingSearchResults = () => {
         <LoadingContainer>
             <LoadingWrapper>
                 <LoadingText title={!query ? "" : `Search results for "${query}"`} />
-                <StyledLoadingSpinner />
+                <LoadingSpinner />
             </LoadingWrapper>
         </LoadingContainer>
     );

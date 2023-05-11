@@ -1,119 +1,99 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useHistory, useLocation } from 'react-router-dom';
-import { Pagination } from '../../../common/Pagination';
+import React from 'react'
+import { useState, useEffect } from 'react';
+import { Pagination } from '../../../common/Pagination'
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import MovieTile from '../../../common/MovieTile';
+import { Wrapper, Item, TileWrapper, StyledLink, Header } from "./styled";
+import { selectGenres } from '../movieBrowserSlice'
 import NoResults from '../../../common/NoResults';
-import { Wrapper, Item, TileWrapper, StyledLink, Header } from './styled';
-import { selectGenres } from '../movieBrowserSlice';
-import { searchQueryParamName } from '../../../core/QueryBox/queryParamName';
-import { toMovie } from '../../../core/routes';
-import LoadingSpinnerOnly from '../../../common/States/Loading/LoadingSpinnerOnly';
-import LoadingSearchResults from '../../../common/States/Loading/LoadingSearchResult';
+import { useQueryParameter } from "../../../core/QueryBox/useQueryParameter";
+import { searchQueryParamName } from "../../../core/QueryBox/queryParamName";
+import { toMovie } from "../../../core/routes";
+
 
 const Movies = () => {
     const [movies, setMovies] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const [searchResults, setSearchResults] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const genres = useSelector(selectGenres);
-    const location = useLocation();
-    const history = useHistory();
-
-
-    let searchQuery = new URLSearchParams(location.search).get(searchQueryParamName);
 
     useEffect(() => {
-        const fetchMovies = async () => {
-            setIsLoading(true);
+        const fetchPopularMovies = async () => {
             try {
-                const searchQuery = new URLSearchParams(location.search).get(
-                    searchQueryParamName
+                const response = await fetch(
+                    `https://api.themoviedb.org/3/movie/popular?api_key=d3f19b5007aaab7cb579f83b9a664dec&language=en-US&page=${currentPage}`
                 );
-                let endpoint;
-                if (searchQuery) {
-                    endpoint = `https://api.themoviedb.org/3/search/movie?api_key=d3f19b5007aaab7cb579f83b9a664dec&language=en-US&query=${searchQuery}&page=${currentPage}`;
-                } else {
-                    endpoint = `https://api.themoviedb.org/3/movie/popular?api_key=d3f19b5007aaab7cb579f83b9a664dec&language=en-US&page=${currentPage}`;
-                }
-                const response = await fetch(endpoint);
                 const data = await response.json();
-                if (searchQuery) {
-                    setSearchResults({ query: searchQuery, count: data.total_results });
-                    if (data.total_results === 0) {
-                        setMovies([]);
-                    } else {
-                        setMovies(data.results);
-                    }
-                } else {
-                    setSearchResults(null);
-                    setMovies(data.results);
-                }
-                setTotalPages(data.total_pages);
+                const lastPage = data.total_pages > 500 ? 500 : data.total_pages;
+                setMovies(data.results);
+                setTotalPages(lastPage);
             } catch (error) {
                 console.error(error);
             }
-            setTimeout(() => {
-                setIsLoading(false);
-            }, 1000);
         };
-        fetchMovies();
-    }, [currentPage, location.search, searchQuery]);
+        fetchPopularMovies();
+    }, [currentPage]);
 
-
-    const renderHeader = () => {
-        if (searchResults) {
-            return (
-                <Header>
-                    Search results for "{searchResults.query}" ({searchResults.count})
-                </Header>
-            );
-        } else {
-            return <Header>Browse Movies</Header>;
-        }
-    };
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
-        if (searchQuery) {
-            history.push(`/movies?${searchQueryParamName}=${searchQuery}&page=${pageNumber}`);
-        } else {
-            history.push(`/movies?page=${pageNumber}`);
-        }
+        //adding function which can show the number of page in the URL:
+        const url = `${window.location.origin}${window.location.pathname}?page=${pageNumber}`;
+        window.history.pushState({ path: url }, '', url);
+    };
+
+    const history = useHistory();
+    const query = useQueryParameter(searchQueryParamName);
+    const [filteredMovies, setFilteredMovies] = useState([]);
+    // const movies = useSelector(selectMovies);
+    const genres = useSelector(selectGenres);
+
+    useEffect(() => {
+        setFilteredMovies(
+            query
+                ? movies.filter((movie) =>
+                    movie.title.toLowerCase().includes(query.toLowerCase())
+                )
+                : movies
+        );
+    }, [query, movies]);
+
+    const handleClick = (movieId) => {
+        history.push(toMovie({ movieId: movieId }));
     };
 
     return (
         <Wrapper>
-            {renderHeader()}
-            {isLoading && !searchQuery && <LoadingSpinnerOnly />}
-            {isLoading && searchQuery && <LoadingSearchResults />}
-            {!isLoading && (
-                <TileWrapper>
-                    {movies.length > 0 ? (
-                        movies.map((movie) => (
+            {!movies.length ? (
+                <NoResults />
+            ) : (
+                <>
+                    <Header>
+                        {!query
+                            ? "Popular Movies"
+                            : `Search results for "${query}" (${filteredMovies.length})`}
+                    </Header>
+                    <TileWrapper>
+                        {filteredMovies.map((movie) => (
                             <Item key={movie.id}>
                                 <StyledLink to={toMovie({ movieId: movie.id })}>
                                     <MovieTile
                                         movie={movie}
                                         genres={genres}
+                                        onClick={() => handleClick(movie.id)}
                                     />
                                 </StyledLink>
                             </Item>
-                        ))
-                    ) : (
-                        searchQuery && <NoResults />
-                    )}
-                </TileWrapper>
+                        ))}
+                    </TileWrapper>
+                </>
             )}
-            {searchQuery && movies.length === 0 && !isLoading && <NoResults />}
             <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
-                onPageChange={handlePageChange}
-            />
+                onPageChange={handlePageChange} />
         </Wrapper>
-    );
-};
+    )
+}
 
 export default Movies;

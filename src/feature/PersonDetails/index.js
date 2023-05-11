@@ -5,7 +5,7 @@ import { Wrapper, SectionTitle, DetailsWrapper } from './styled';
 import PersonTile from './PersonDeatilsPage/PersonTile';
 import Cast from '../../feature/PersonDetails/PersonDeatilsPage/Cast';
 import Crew from '../../feature/PersonDetails/PersonDeatilsPage/Crew';
-import Loading from "../../common/States/Loading/LoadingSpinnerOnly";
+import Loading from "../../common/States/Loading/LoadingSpinner";
 import ErrorBox from "../../common/ErrorBox";
 
 const PersonDetails = () => {
