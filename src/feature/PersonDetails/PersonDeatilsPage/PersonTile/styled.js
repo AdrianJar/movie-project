@@ -13,7 +13,7 @@ export const ContainerTile = styled.div`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMin}px) {
-    padding: 0 12px;
+    padding: 0 10px;
     margin: 0;
     }
 `;
@@ -103,6 +103,10 @@ export const Production = styled.div`
   margin: 0px;
   display: flex;
   flex-direction: row;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    flex-direction: column;
+  }
 `;
 
 export const GreyText = styled.p`
