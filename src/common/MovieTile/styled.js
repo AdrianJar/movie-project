@@ -54,6 +54,9 @@ export const Poster = styled.img`
         width: 140px;
         height: fit-content;
     }
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobileMin}px) {
+        width: 120px;
+    }
 `;
 
 export const Details = styled.div`
@@ -67,6 +70,11 @@ export const Details = styled.div`
         gap: 4px;
     }
 `;
+
+export const DetailsGrid = styled.div`
+
+`;
+
 
 export const Title = styled.h2`
     font-weight: 500;
