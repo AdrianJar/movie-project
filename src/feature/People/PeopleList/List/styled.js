@@ -4,6 +4,11 @@ import { NavLink } from 'react-router-dom';
 export const Wrapper = styled.div`
     max-width: 1368px;
     margin: 56px auto 40px;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+        padding: 0 12px;
+        margin: 0;
+    }
 `;
 
 export const Header = styled.h1`
@@ -95,7 +100,7 @@ export const StyledNavLink = styled(NavLink)`
     &:hover {
         cursor: pointer;
 
-    @media (max-width: ${({theme})=>theme.breakpoints.mobileMax}px) {
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
         width: 100%;
     }
   }
